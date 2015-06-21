@@ -81,27 +81,19 @@ We also prefer to have someone manually approve them by hand.
 top_queries = Search.group("LOWER(query)")
                     .having("COUNT(DISTINCT user_id) >= 5")
                     .count("DISTINCT user_id")
+product_names = Product.pluck(:name)
+brand_names = Brand.pluck(:name)
 
 autosuggest = Autosuggest.new(top_queries)
-
-# create corpus with product names and brand names
-autosuggest.parse_words Product.pluck(:name)
-brand_names = Brand.pluck(:name)
+autosuggest.parse_words product_names
 autosuggest.add_concept "brand", brand_names
-
-# prefer brand names
 autosuggest.prefer brand_names
-
-# prevent false positives for duplicates
 autosuggest.not_duplicates [["straws", "straus"]]
-
-# blacklist words
 autosuggest.blacklist_words ["boom"]
 
-# print suggestions
 puts autosuggest.pretty_suggestions
 # or
-p autosuggest.suggestions
+suggestions = autosuggest.suggestions
 ```
 
 ## Installation
