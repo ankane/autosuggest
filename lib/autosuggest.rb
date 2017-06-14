@@ -1,4 +1,5 @@
 require "autosuggest/version"
+require "set"
 require "lingua/stemmer"
 require "yaml" # for obscenity
 require "obscenity"
