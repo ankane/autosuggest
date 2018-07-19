@@ -174,7 +174,7 @@ class Autosuggest
     str.to_s.downcase.split(" ")
   end
 
-  # from http://blog.lojic.com/2008/09/04/how-to-write-a-spelling-corrector-in-ruby/
+  # from https://blog.lojic.com/2008/09/04/how-to-write-a-spelling-corrector-in-ruby/
   LETTERS = ("a".."z").to_a.join + "'"
   def edits(word)
     n = word.length
