@@ -4,6 +4,14 @@ Generate autocomplete suggestions based on what your users search
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
+## Installation
+
+Add this line to your application’s Gemfile:
+
+```ruby
+gem 'autosuggest'
+```
+
 ## How It Works
 
 #### Start with the most popular queries
@@ -94,14 +102,6 @@ autosuggest.blacklist_words ["boom"]
 puts autosuggest.pretty_suggestions
 # or
 suggestions = autosuggest.suggestions
-```
-
-## Installation
-
-Add this line to your application’s Gemfile:
-
-```ruby
-gem 'autosuggest'
 ```
 
 ## TODO
