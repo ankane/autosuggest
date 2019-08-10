@@ -1,6 +1,6 @@
 require_relative "test_helper"
 
-class TestAutosuggest < Minitest::Test
+class AutosuggestTest < Minitest::Test
   def test_similar_queries
     top_queries = {"chili" => 2, "chilli" => 1}
     autocomplete = Autosuggest.new(top_queries)

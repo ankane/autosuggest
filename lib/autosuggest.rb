@@ -1,8 +1,11 @@
-require "autosuggest/version"
+# dependencies
 require "set"
 require "lingua/stemmer"
 require "yaml" # for obscenity
 require "obscenity"
+
+# modules
+require "autosuggest/version"
 
 class Autosuggest
   def initialize(top_queries)
@@ -189,15 +192,5 @@ class Autosuggest
 
   def normalize_query(query)
     tokenize(query.to_s.gsub("&", "and")).map { |q| Lingua.stemmer(q) }.sort.join
-  end
-
-  # TODO remove ActiveSupport dependency
-
-  def singularize(str)
-    str.singularize
-  end
-
-  def pluralize(str)
-    str.pluralize
   end
 end

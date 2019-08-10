@@ -104,10 +104,6 @@ puts autosuggest.pretty_suggestions
 suggestions = autosuggest.suggestions
 ```
 
-## TODO
-
-- try Jaro-Winkler for duplicates
-
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
