@@ -4,6 +4,8 @@ Generate autocomplete suggestions based on what your users search
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
+[![Build Status](https://travis-ci.org/ankane/autosuggest.svg?branch=master)](https://travis-ci.org/ankane/autosuggest)
+
 ## Installation
 
 Add this line to your application’s Gemfile:
