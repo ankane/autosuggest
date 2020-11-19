@@ -4,7 +4,7 @@ Generate autocomplete suggestions based on what your users search
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
-[![Build Status](https://travis-ci.org/ankane/autosuggest.svg?branch=master)](https://travis-ci.org/ankane/autosuggest)
+[![Build Status](https://github.com/ankane/autosuggest/workflows/build/badge.svg?branch=master)](https://github.com/ankane/autosuggest/actions)
 
 ## Installation
 
