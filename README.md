@@ -14,16 +14,30 @@ Add this line to your application’s Gemfile:
 gem 'autosuggest'
 ```
 
-## How It Works
+## Getting Started
 
-#### Start with the most popular queries
+#### Prepare your data
+
+Start with a hash of queries and their popularity, like the number of users who have searched it.
 
 ```ruby
-top_queries = Search.group("LOWER(query)")
-                    .having("COUNT(DISTINCT user_id) >= 5")
-                    .count("DISTINCT user_id")
-# {"bananas" => 353, "apples" => 213, ...
+top_queries = {
+  "bananas" => 353,
+  "apples"  => 213,
+  "oranges" => 140
+}
+```
 
+With [Searchjoy](https://github.com/ankane/searchjoy), you can do:
+
+```ruby
+top_queries = Searchjoy::Search.group(:normalized_query)
+  .having("COUNT(DISTINCT user_id) >= 5").distinct.count(:user_id)
+```
+
+Then pass them to Autosuggest.
+
+```ruby
 autosuggest = Autosuggest.new(top_queries)
 ```
 
