@@ -79,9 +79,7 @@ Get suggestions with:
 autosuggest.suggestions
 ```
 
-Filter queries without results and you’re set.
-
-We also prefer to have someone manually approve them by hand.
+Filter queries without results and you’re set. We also prefer to have someone manually approve them by hand.
 
 ## Full Example
 
@@ -103,6 +101,10 @@ puts autosuggest.pretty_suggestions
 # or
 suggestions = autosuggest.suggestions
 ```
+
+## History
+
+View the [changelog](https://github.com/ankane/autosuggest/blob/master/CHANGELOG.md)
 
 ## Contributing
 
