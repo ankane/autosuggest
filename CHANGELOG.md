@@ -1,4 +1,4 @@
-## 0.1.1 (unreleased)
+## 0.1.1 (2021-03-15)
 
 - Deprecated `blacklist_words` in favor of `block_words`
 
