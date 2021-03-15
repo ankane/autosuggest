@@ -32,17 +32,35 @@ class AutosuggestTest < Minitest::Test
     assert !autocomplete.suggestions.any? { |s| s[:duplicate] }
   end
 
+  def test_block_words
+    top_queries = {"test boom" => 2}
+    autocomplete = Autosuggest.new(top_queries)
+    autocomplete.block_words(["boom"])
+    assert autocomplete.suggestions.first[:blocked]
+  end
+
+  def test_block_words_phrase
+    top_queries = {"test boom" => 2}
+    autocomplete = Autosuggest.new(top_queries)
+    autocomplete.block_words(["test boom"])
+    assert autocomplete.suggestions.first[:blocked]
+  end
+
   def test_blacklist
     top_queries = {"test boom" => 2}
     autocomplete = Autosuggest.new(top_queries)
-    autocomplete.blacklist_words(["boom"])
+    assert_output(nil, /deprecated/) do
+      autocomplete.blacklist_words(["boom"])
+    end
     assert autocomplete.suggestions.first[:blacklisted]
   end
 
   def test_blacklist_phrase
     top_queries = {"test boom" => 2}
     autocomplete = Autosuggest.new(top_queries)
-    autocomplete.blacklist_words(["test boom"])
+    assert_output(nil, /deprecated/) do
+      autocomplete.blacklist_words(["test boom"])
+    end
     assert autocomplete.suggestions.first[:blacklisted]
   end
 

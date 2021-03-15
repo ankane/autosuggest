@@ -63,14 +63,12 @@ There are two ways to build the corpus, which can be used together.
   autosuggest.add_concept "brand", Brand.pluck(:name)
   ```
 
-#### Blacklist words
+#### Filter words
 
-[Profanity](https://github.com/tjackiw/obscenity/blob/master/config/blacklist.yml) is blacklisted by default.
-
-Add custom words with:
+[Profanity](https://github.com/tjackiw/obscenity/blob/master/config/blacklist.yml) is blocked by default. Add custom words with:
 
 ```ruby
-autosuggest.blacklist_words ["boom"]
+autosuggest.block_words ["boom"]
 ```
 
 #### Profit
@@ -99,7 +97,7 @@ autosuggest.parse_words product_names
 autosuggest.add_concept "brand", brand_names
 autosuggest.prefer brand_names
 autosuggest.not_duplicates [["straws", "straus"]]
-autosuggest.blacklist_words ["boom"]
+autosuggest.block_words ["boom"]
 
 puts autosuggest.pretty_suggestions
 # or

@@ -13,6 +13,7 @@ class Autosuggest
     @concepts = {}
     @words = Set.new
     @non_duplicates = Set.new
+    @blocked_words = Set.new
     @blacklisted_words = Set.new
     @preferred_queries = {}
     @profane_words = Set.new(Obscenity::Base.blacklist)
@@ -46,7 +47,14 @@ class Autosuggest
     end
   end
 
+  def block_words(words)
+    words.each do |word|
+      @blocked_words << word.downcase
+    end
+  end
+
   def blacklist_words(words)
+    warn "[autosuggest] blacklist_words is deprecated. Use block_words instead."
     words.each do |word|
       @blacklisted_words << word.downcase
     end
@@ -103,19 +111,20 @@ class Autosuggest
       # exclude misspellings that are not brands
       misspelling = @words.any? && misspellings?(query)
 
-      profane = blacklisted?(query, @profane_words)
-
-      blacklisted = blacklisted?(query, @blacklisted_words)
+      profane = blocked?(query, @profane_words)
+      blocked = blocked?(query, @blocked_words)
+      blacklisted = blocked?(query, @blacklisted_words)
 
       notes = []
       notes << "duplicate of #{duplicate}" if duplicate
       notes.concat(concepts)
       notes << "misspelling" if misspelling
       notes << "profane" if profane
+      notes << "blocked" if blocked
       notes << "blacklisted" if blacklisted
       notes << "originally #{original_query}" if original_query
 
-      {
+      result = {
         query: query,
         original_query: original_query,
         score: count,
@@ -123,9 +132,11 @@ class Autosuggest
         concepts: concepts,
         misspelling: misspelling,
         profane: profane,
-        blacklisted: blacklisted,
-        notes: notes
+        blocked: blocked
       }
+      result[:blacklisted] = blacklisted if @blacklisted_words.any?
+      result[:notes] = notes
+      result
     end
   end
 
@@ -148,9 +159,9 @@ class Autosuggest
     true
   end
 
-  def blacklisted?(query, blacklisted_words)
+  def blocked?(query, blocked_words)
     recurse(tokenize(query)).each do |terms|
-      return true if terms.any? { |t| blacklisted_words.include?(t) }
+      return true if terms.any? { |t| blocked_words.include?(t) }
     end
     false
   end
