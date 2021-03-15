@@ -77,4 +77,12 @@ class AutosuggestTest < Minitest::Test
     autocomplete.add_concept("brand", ["amys"])
     assert_equal ["brand"], autocomplete.suggestions.first[:concepts]
   end
+
+  def test_parse_words
+    top_queries = {"tomato" => 2, "tomoto" => 1}
+    autocomplete = Autosuggest.new(top_queries)
+    autocomplete.parse_words ["tomato soup"]
+    refute autocomplete.suggestions.first[:misspelling]
+    assert autocomplete.suggestions.last[:misspelling]
+  end
 end
