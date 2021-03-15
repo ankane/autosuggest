@@ -98,9 +98,8 @@ Filter queries without results and you’re set. We also prefer to have someone 
 ## Full Example
 
 ```ruby
-top_queries = Search.group("LOWER(query)")
-                    .having("COUNT(DISTINCT user_id) >= 5")
-                    .count("DISTINCT user_id")
+top_queries = Searchjoy::Search.group(:normalized_query)
+  .having("COUNT(DISTINCT user_id) >= 5").distinct.count(:user_id)
 product_names = Product.pluck(:name)
 brand_names = Brand.pluck(:name)
 
