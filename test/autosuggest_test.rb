@@ -70,4 +70,11 @@ class AutosuggestTest < Minitest::Test
     autocomplete.prefer(["amy's"])
     assert_equal "amy's", autocomplete.suggestions.first[:query]
   end
+
+  def test_add_concept
+    top_queries = {"amys" => 2}
+    autocomplete = Autosuggest.new(top_queries)
+    autocomplete.add_concept("brand", ["amys"])
+    assert_equal ["brand"], autocomplete.suggestions.first[:concepts]
+  end
 end
