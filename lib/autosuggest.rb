@@ -1,7 +1,9 @@
-# dependencies
+# stdlib
 require "set"
-require "lingua/stemmer"
 require "yaml" # for obscenity
+
+# dependencies
+require "lingua/stemmer"
 require "obscenity"
 
 # modules
