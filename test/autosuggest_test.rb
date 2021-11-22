@@ -122,6 +122,23 @@ class AutosuggestTest < Minitest::Test
     assert autosuggest.suggestions.last[:misspelling]
   end
 
+  def test_misspelling
+    top_queries = {
+      "hello" => 9,
+      "world" => 8,
+      "multiple words" => 7,
+      "hello multiple words" => 6,
+      "multiple words hello" => 5,
+      "multiple hello words" => 4,
+      "hello multiple" => 3,
+      "multiple" => 2
+    }
+    autosuggest = Autosuggest.new(top_queries)
+    autosuggest.parse_words ["hello"]
+    autosuggest.add_concept("brand", ["multiple words"])
+    assert_equal [false, true, false, false, false, true, true, true], autosuggest.suggestions.map { |s| s[:misspelling] }
+  end
+
   def test_long_query
     top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest.new(top_queries)
