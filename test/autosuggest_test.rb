@@ -139,6 +139,18 @@ class AutosuggestTest < Minitest::Test
     assert_equal [false, true, false, false, false, true, true, true], autosuggest.suggestions.map { |s| s[:misspelling] }
   end
 
+  def test_misspelling_overlap
+    top_queries = {
+      "word hello brand" => 3,
+      "word hello brand great" => 2,
+      "hello hello brand word" => 1
+    }
+    autosuggest = Autosuggest.new(top_queries)
+    autosuggest.parse_words ["hello", "word"]
+    autosuggest.add_concept("brand", ["hello", "hello brand", "hello brand great"])
+    assert_equal [false, false, false], autosuggest.suggestions.map { |s| s[:misspelling] }
+  end
+
   def test_long_query
     top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest.new(top_queries)
