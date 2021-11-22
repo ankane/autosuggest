@@ -110,12 +110,14 @@ class Autosuggest
         concepts << name if values.include?(query)
       end
 
-      # exclude misspellings that are not brands
-      misspelling = @words.any? && misspellings?(query)
+      permutations = recurse(tokenize(query))
 
-      profane = blocked?(query, @profane_words)
-      blocked = blocked?(query, @blocked_words)
-      blacklisted = blocked?(query, @blacklisted_words)
+      # exclude misspellings that are not brands
+      misspelling = @words.any? && misspellings?(permutations)
+
+      profane = blocked?(permutations, @profane_words)
+      blocked = blocked?(permutations, @blocked_words)
+      blacklisted = blocked?(permutations, @blacklisted_words)
 
       notes = []
       notes << "duplicate of #{duplicate}" if duplicate
@@ -152,8 +154,8 @@ class Autosuggest
 
   protected
 
-  def misspellings?(query)
-    recurse(tokenize(query)).each do |terms|
+  def misspellings?(permutations)
+    permutations.each do |terms|
       if terms.all? { |t| @concepts.any? { |_, values| values.include?(t) } || @words.include?(t) }
         return false
       end
@@ -161,8 +163,8 @@ class Autosuggest
     true
   end
 
-  def blocked?(query, blocked_words)
-    recurse(tokenize(query)).each do |terms|
+  def blocked?(permutations, blocked_words)
+    permutations.each do |terms|
       return true if terms.any? { |t| blocked_words.include?(t) }
     end
     false

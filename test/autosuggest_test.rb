@@ -85,4 +85,11 @@ class AutosuggestTest < Minitest::Test
     refute autosuggest.suggestions.first[:misspelling]
     assert autosuggest.suggestions.last[:misspelling]
   end
+
+  def test_long_query
+    # TODO test longer
+    top_queries = {10.times.map { |i| "word#{i}" }.join(" ") => 1}
+    autosuggest = Autosuggest.new(top_queries)
+    assert autosuggest.suggestions
+  end
 end
