@@ -87,8 +87,7 @@ class AutosuggestTest < Minitest::Test
   end
 
   def test_long_query
-    # TODO test longer
-    top_queries = {10.times.map { |i| "word#{i}" }.join(" ") => 1}
+    top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest.new(top_queries)
     assert autosuggest.suggestions
   end

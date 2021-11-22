@@ -15,14 +15,18 @@ class Autosuggest
     @concepts = {}
     @words = Set.new
     @non_duplicates = Set.new
-    @blocked_words = Set.new
-    @blacklisted_words = Set.new
+    @blocked_words = {}
+    @blacklisted_words = {}
     @preferred_queries = {}
-    @profane_words = Set.new(Obscenity::Base.blacklist)
+    @profane_words = {}
+    @concept_tree = {}
+    add_nodes(@profane_words, Obscenity::Base.blacklist)
   end
 
   def add_concept(name, values)
-    @concepts[name] = Set.new(values.compact.uniq.map(&:downcase))
+    values = values.compact.uniq
+    add_nodes(@concept_tree, values)
+    @concepts[name] = Set.new(values.map(&:downcase))
   end
 
   def parse_words(phrases, options = {})
@@ -50,16 +54,14 @@ class Autosuggest
   end
 
   def block_words(words)
-    words.each do |word|
-      @blocked_words << word.downcase
-    end
+    add_nodes(@blocked_words, words)
+    words
   end
 
   def blacklist_words(words)
     warn "[autosuggest] blacklist_words is deprecated. Use block_words instead."
-    words.each do |word|
-      @blacklisted_words << word.downcase
-    end
+    add_nodes(@blacklisted_words, words)
+    words
   end
 
   def prefer(queries)
@@ -110,14 +112,14 @@ class Autosuggest
         concepts << name if values.include?(query)
       end
 
-      permutations = recurse(tokenize(query))
+      tokens = tokenize(query)
 
       # exclude misspellings that are not brands
-      misspelling = @words.any? && misspellings?(permutations)
+      misspelling = @words.any? && misspellings?(tokens)
 
-      profane = blocked?(permutations, @profane_words)
-      blocked = blocked?(permutations, @blocked_words)
-      blacklisted = blocked?(permutations, @blacklisted_words)
+      profane = blocked?(tokens, @profane_words)
+      blocked = blocked?(tokens, @blocked_words)
+      blacklisted = blocked?(tokens, @blacklisted_words)
 
       notes = []
       notes << "duplicate of #{duplicate}" if duplicate
@@ -154,38 +156,39 @@ class Autosuggest
 
   protected
 
-  def misspellings?(permutations)
-    permutations.each do |terms|
-      if terms.all? { |t| @concepts.any? { |_, values| values.include?(t) } || @words.include?(t) }
-        return false
+  def misspellings?(tokens)
+    pos = [0]
+    while i = pos.shift
+      return false if i == tokens.size
+
+      if @words.include?(tokens[i])
+        pos << i + 1
+      end
+
+      node = @concept_tree[tokens[i]]
+      j = i
+      while node
+        j += 1
+        pos << j if node[:eos]
+        break if j == tokens.size
+        node = node[tokens[j]]
       end
     end
     true
   end
 
-  def blocked?(permutations, blocked_words)
-    permutations.each do |terms|
-      return true if terms.any? { |t| blocked_words.include?(t) }
+  def blocked?(tokens, blocked_words)
+    tokens.each_with_index do |token, i|
+      node = blocked_words[token]
+      j = i
+      while node
+        return true if node[:eos]
+        j += 1
+        break if j == tokens.size
+        node = node[tokens[j]]
+      end
     end
     false
-  end
-
-  def recurse(words)
-    if words.size == 1
-      [words]
-    else
-      result = [[words.join(" ")]]
-      i = 0
-      while i < words.size - 1
-        recurse(words[0..i]).each do |v1|
-          recurse(words[i + 1..-1]).each do |v2|
-            result << v1 + v2
-          end
-        end
-        i += 1
-      end
-      result.uniq
-    end
   end
 
   def tokenize(str)
@@ -207,5 +210,16 @@ class Autosuggest
 
   def normalize_query(query)
     tokenize(query.to_s.gsub("&", "and")).map { |q| Lingua.stemmer(q) }.sort.join
+  end
+
+  def add_nodes(var, words)
+    words.each do |word|
+      node = var
+      tokenize(word).each do |token|
+        node = (node[token] ||= {})
+      end
+      node[:eos] = true
+    end
+    var
   end
 end
