@@ -112,7 +112,8 @@ autosuggest.block_words ["boom"]
 
 puts autosuggest.pretty_suggestions
 # or
-suggestions = autosuggest.suggestions.reject { |s| s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked] }
+suggestions = autosuggest.suggestions
+  .reject { |s| s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked] }
 ```
 
 ## History
