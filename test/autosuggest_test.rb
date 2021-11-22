@@ -4,7 +4,7 @@ class AutosuggestTest < Minitest::Test
   def test_fields
     top_queries = {"hello" => 2}
     autosuggest = Autosuggest.new(top_queries)
-    suggestion = autosuggest.suggestions.last
+    suggestion = autosuggest.suggestions.first
     assert_equal suggestion[:query], "hello"
     assert_nil suggestion[:original_query]
     assert_equal 2, suggestion[:score]
@@ -109,7 +109,9 @@ class AutosuggestTest < Minitest::Test
     top_queries = {"amys" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.add_concept("brand", ["amys"])
-    assert_equal ["brand"], autosuggest.suggestions.first[:concepts]
+    suggestion = autosuggest.suggestions.first
+    assert_equal ["brand"], suggestion[:concepts]
+    assert_equal ["brand"], suggestion[:notes]
   end
 
   def test_parse_words
