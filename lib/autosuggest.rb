@@ -173,6 +173,8 @@ class Autosuggest
         break if j == tokens.size
         node = node[tokens[j]]
       end
+
+      pos.uniq!
     end
     true
   end
