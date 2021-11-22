@@ -1,6 +1,21 @@
 require_relative "test_helper"
 
 class AutosuggestTest < Minitest::Test
+  def test_fields
+    top_queries = {"hello" => 2}
+    autosuggest = Autosuggest.new(top_queries)
+    suggestion = autosuggest.suggestions.last
+    assert_equal suggestion[:query], "hello"
+    assert_nil suggestion[:original_query]
+    assert_equal 2, suggestion[:score]
+    assert_nil suggestion[:duplicate]
+    assert_empty suggestion[:concepts]
+    refute suggestion[:misspellings]
+    refute suggestion[:profane]
+    refute suggestion[:blocked]
+    assert_empty suggestion[:notes]
+  end
+
   def test_similar_queries
     top_queries = {"chili" => 2, "chilli" => 1}
     autosuggest = Autosuggest.new(top_queries)
