@@ -99,7 +99,10 @@ class AutosuggestTest < Minitest::Test
     top_queries = {"amys" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.prefer(["amy's"])
-    assert_equal "amy's", autosuggest.suggestions.first[:query]
+    suggestion = autosuggest.suggestions.first
+    assert_equal "amy's", suggestion[:query]
+    assert_equal "amys", suggestion[:original_query]
+    assert_equal ["originally amys"], suggestion[:notes]
   end
 
   def test_add_concept
