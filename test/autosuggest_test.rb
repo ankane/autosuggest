@@ -43,13 +43,15 @@ class AutosuggestTest < Minitest::Test
   def test_duplicates
     top_queries = {"cage free eggs" => 2, "eggs cage free" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    assert autosuggest.suggestions.last[:duplicate]
+    suggestion = autosuggest.suggestions.last
+    assert_equal "cage free eggs", suggestion[:duplicate]
+    assert_equal ["duplicate of cage free eggs"], suggestion[:notes]
   end
 
   def test_not_duplicates
     top_queries = {"straws" => 2, "straus" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    autosuggest.not_duplicates([%w(straus straws)])
+    autosuggest.not_duplicates([["straus", "straws"]])
     assert !autosuggest.suggestions.any? { |s| s[:duplicate] }
   end
 
@@ -57,14 +59,18 @@ class AutosuggestTest < Minitest::Test
     top_queries = {"test boom" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.block_words(["boom"])
-    assert autosuggest.suggestions.first[:blocked]
+    suggestion = autosuggest.suggestions.first
+    assert suggestion[:blocked]
+    assert_equal ["blocked"], suggestion[:notes]
   end
 
   def test_block_words_phrase
     top_queries = {"test boom" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.block_words(["test boom"])
-    assert autosuggest.suggestions.first[:blocked]
+    suggestion = autosuggest.suggestions.first
+    assert suggestion[:blocked]
+    assert_equal ["blocked"], suggestion[:notes]
   end
 
   def test_blacklist
@@ -73,7 +79,9 @@ class AutosuggestTest < Minitest::Test
     assert_output(nil, /deprecated/) do
       autosuggest.blacklist_words(["boom"])
     end
-    assert autosuggest.suggestions.first[:blacklisted]
+    suggestion = autosuggest.suggestions.first
+    assert suggestion[:blacklisted]
+    assert_equal ["blacklisted"], suggestion[:notes]
   end
 
   def test_blacklist_phrase
@@ -82,7 +90,9 @@ class AutosuggestTest < Minitest::Test
     assert_output(nil, /deprecated/) do
       autosuggest.blacklist_words(["test boom"])
     end
-    assert autosuggest.suggestions.first[:blacklisted]
+    suggestion = autosuggest.suggestions.first
+    assert suggestion[:blacklisted]
+    assert_equal ["blacklisted"], suggestion[:notes]
   end
 
   def test_prefer
