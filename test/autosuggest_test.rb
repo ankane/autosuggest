@@ -19,19 +19,25 @@ class AutosuggestTest < Minitest::Test
   def test_similar_queries
     top_queries = {"chili" => 2, "chilli" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    assert autosuggest.suggestions.last[:duplicate]
+    suggestion = autosuggest.suggestions.last
+    assert_equal "chili", suggestion[:duplicate]
+    assert_equal ["duplicate of chili"], suggestion[:notes]
   end
 
   def test_stemming
     top_queries = {"tomato" => 2, "tomatoes" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    assert autosuggest.suggestions.last[:duplicate]
+    suggestion = autosuggest.suggestions.last
+    assert_equal "tomato", suggestion[:duplicate]
+    assert_equal ["duplicate of tomato"], suggestion[:notes]
   end
 
   def test_profanity
     top_queries = {"hell" => 2}
     autosuggest = Autosuggest.new(top_queries)
-    assert autosuggest.suggestions.first[:profane]
+    suggestion = autosuggest.suggestions.first
+    assert suggestion[:profane]
+    assert_equal ["profane"], suggestion[:notes]
   end
 
   def test_duplicates
