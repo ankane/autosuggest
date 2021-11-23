@@ -3,7 +3,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
     create_table :autosuggest_suggestions do |t|
       t.string :query
       t.float :score
-      t.datetime :updated_at
+      t.datetime :updated_at<%= mysql? ? ", precision: 6" : "" %>
     end
 
     add_index :autosuggest_suggestions, :query, unique: true
