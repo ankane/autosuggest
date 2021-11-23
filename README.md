@@ -87,7 +87,7 @@ autosuggest.block_words ["boom"]
 
 #### Profit
 
-Get suggestions with:
+Generate suggestions with:
 
 ```ruby
 autosuggest.suggestions(filter: true)
