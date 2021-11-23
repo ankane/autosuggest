@@ -4,3 +4,5 @@ gemspec
 
 gem "rake"
 gem "minitest"
+gem "activerecord"
+gem "sqlite3"
