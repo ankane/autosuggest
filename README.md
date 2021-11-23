@@ -142,10 +142,9 @@ Autosuggest::Suggestion
 You can also cache suggestions for performance.
 
 ```ruby
-suggestions =
-  Rails.cache.fetch("suggestions", expires_in: 5.minutes) do
-    Autosuggest::Suggestion.order(score: :desc).pluck(:query)
-  end
+Rails.cache.fetch("suggestions", expires_in: 5.minutes) do
+  Autosuggest::Suggestion.order(score: :desc).pluck(:query)
+end
 ```
 
 #### Additional considerations
