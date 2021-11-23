@@ -116,6 +116,8 @@ Autosuggest::Suggestion.transaction do
 end
 ```
 
+Use [activerecord-import](https://github.com/zdennis/activerecord-import) for upserts with Rails < 6.
+
 #### Show suggestions
 
 Use JavaScript autocomplete library like [typeahead.js](https://github.com/twitter/typeahead.js) to show suggestions in the UI.
