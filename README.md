@@ -93,7 +93,9 @@ Get suggestions with:
 autosuggest.suggestions(filter: true)
 ```
 
-Filter queries without results and you’re set. We also prefer to have someone manually approve them by hand.
+Save the suggestions to your database and use a JavaScript autocomplete library like [typeahead.js](https://github.com/twitter/typeahead.js) to show them in the UI.
+
+You may also want to filter suggestions without results and have someone manually approve them by hand.
 
 ## Full Example
 
