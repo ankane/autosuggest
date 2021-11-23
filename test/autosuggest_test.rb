@@ -156,4 +156,12 @@ class AutosuggestTest < Minitest::Test
     autosuggest = Autosuggest.new(top_queries)
     assert autosuggest.suggestions
   end
+
+  def test_filter
+    top_queries = {"tomato" => 2, "tomatoes" => 1}
+    autosuggest = Autosuggest.new(top_queries)
+    suggestions = autosuggest.suggestions(filter: true)
+    assert_equal 1, suggestions.size
+    assert_equal "tomato", suggestions.first[:query]
+  end
 end

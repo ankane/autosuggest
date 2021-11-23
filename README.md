@@ -90,7 +90,7 @@ autosuggest.block_words ["boom"]
 Get suggestions with:
 
 ```ruby
-autosuggest.suggestions
+autosuggest.suggestions(filter: true)
 ```
 
 Filter queries without results and you’re set. We also prefer to have someone manually approve them by hand.
@@ -112,8 +112,7 @@ autosuggest.block_words ["boom"]
 
 puts autosuggest.pretty_suggestions
 # or
-suggestions = autosuggest.suggestions
-  .reject { |s| s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked] }
+suggestions = autosuggest.suggestions(filter: true)
 ```
 
 ## History

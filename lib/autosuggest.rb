@@ -70,10 +70,11 @@ class Autosuggest
     end
   end
 
-  def suggestions
+  # TODO add queries method for filter: false and make suggestions use filter: true in 0.2.0
+  def suggestions(filter: false)
     stemmed_queries = {}
     added_queries = Set.new
-    @top_queries.sort_by { |_query, count| -count }.map do |query, count|
+    results = @top_queries.sort_by { |_query, count| -count }.map do |query, count|
       query = query.to_s
 
       # TODO do not ignore silently
@@ -144,6 +145,10 @@ class Autosuggest
       result[:notes] = notes
       result
     end
+    if filter
+      results.reject! { |s| s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked] }
+    end
+    results
   end
 
   def pretty_suggestions

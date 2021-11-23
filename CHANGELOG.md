@@ -1,5 +1,6 @@
 ## 0.1.2 (unreleased)
 
+- Added `filter` option to `suggestions` method
 - Improved performance
 
 ## 0.1.1 (2021-03-15)
