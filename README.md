@@ -150,7 +150,7 @@ suggestions =
 
 #### Additional steps
 
-You may also want to filter suggestions without results and have someone manually approve them by hand. You can add additional fields to your data store to accomplish this.
+You may want to have someone manually approve suggestions as well as filter any suggestions without results. You can add additional fields to your model/data store to accomplish this.
 
 ## Example
 
