@@ -130,7 +130,7 @@ With Rails, you can load all suggestions with:
 Autosuggest::Suggestion.order(score: :desc).pluck(:query)
 ```
 
-And specific suggestions with:
+And suggestions matching user input with:
 
 ```ruby
 input = params[:query]
