@@ -10,7 +10,6 @@ class ModelTest < Minitest::Test
     records = suggestions.map { |s| s.slice(:query, :score).merge(updated_at: now) }
     Autosuggest::Suggestion.transaction do
       Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
-      # optional: remove previous suggestions
       Autosuggest::Suggestion.where("updated_at < ?", now).delete_all
     end
 
