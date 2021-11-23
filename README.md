@@ -148,7 +148,7 @@ suggestions =
   end
 ```
 
-#### Additional steps
+#### Additional considerations
 
 You may want to have someone manually approve suggestions as well as filter any suggestions without results. You can add additional fields to your model/data store to accomplish this.
 
