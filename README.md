@@ -150,14 +150,24 @@ suggestions =
 
 #### Additional considerations
 
-You may want to have someone manually approve suggestions as well as filter any suggestions without results. You can add additional fields to your model/data store to accomplish this.
+You may want to have someone manually approve suggestions:
+
+```ruby
+Autosuggest::Suggestion.where(approved: true)
+```
+
+Or filter suggestions without results:
 
 ```ruby
 Autosuggest::Suggestion.find_each do |suggestion|
   suggestion.has_results = Product.search(suggestion.query, load: false, limit: 1).any?
   suggestion.save! if suggestion.changed?
 end
+
+Autosuggest::Suggestion.where(has_results: true)
 ```
+
+You can add additional fields to your model/data store to accomplish this.
 
 ## Example
 
