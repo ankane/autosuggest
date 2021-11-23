@@ -5,4 +5,12 @@ gemspec
 gem "rake"
 gem "minitest"
 gem "activerecord"
-gem "sqlite3"
+
+case ENV["ADAPTER"]
+when "postgresql"
+  gem "pg"
+when "mysql"
+  gem "mysql2"
+else
+  gem "sqlite3"
+end

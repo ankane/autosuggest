@@ -1,6 +1,10 @@
 require_relative "test_helper"
 
 class ModelTest < Minitest::Test
+  def setup
+    Autosuggest::Suggestion.delete_all
+  end
+
   def test_works
     top_queries = {"apple" => 3, "banana" => 2, "carrot" => 1}
     autosuggest = Autosuggest.new(top_queries)
@@ -36,7 +40,11 @@ class ModelTest < Minitest::Test
     now = Time.now
     records = autosuggest.suggestions(filter: true).map { |s| s.slice(:query, :score).merge(updated_at: now) }
     Autosuggest::Suggestion.transaction do
-      Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
+      if ENV["ADAPTER"] == "mysql"
+        Autosuggest::Suggestion.upsert_all(records)
+      else
+        Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
+      end
       Autosuggest::Suggestion.where("updated_at < ?", now).delete_all
     end
   end
