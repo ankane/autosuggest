@@ -85,19 +85,66 @@ There are two ways to build the corpus, which can be used together.
 autosuggest.block_words ["boom"]
 ```
 
-#### Profit
+#### Generate suggestions
 
 Generate suggestions with:
 
 ```ruby
-autosuggest.suggestions(filter: true)
+suggestions = autosuggest.suggestions(filter: true)
 ```
 
-Save the suggestions to your database and use a JavaScript autocomplete library like [typeahead.js](https://github.com/twitter/typeahead.js) to show them in the UI.
+#### Save suggestions
 
-You may also want to filter suggestions without results and have someone manually approve them by hand.
+Save suggestions in your database or another data store.
 
-## Full Example
+With Rails, you can generate a simple model with: [unreleased]
+
+```sh
+rails generate autosuggest:suggestions
+rails db:migrate
+```
+
+And update suggestions with:
+
+```ruby
+now = Time.now
+records = suggestions.map { |s| s.slice(:query, :score).merge(updated_at: now) }
+Autosuggest::Suggestion.transaction do
+  Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
+  # optional: remove previous suggestions
+  Autosuggest::Suggestion.where("updated_at < ?", now).delete_all
+end
+```
+
+#### Show suggestions
+
+Use JavaScript autocomplete library like [typeahead.js](https://github.com/twitter/typeahead.js) to show suggestions in the UI.
+
+If you only have a few thousand suggestions, it’s much faster to load them all at once instead of as a user types (eliminates network requests).
+
+With Rails, you can load all suggestions with:
+
+```ruby
+Autosuggest::Suggestion.order(score: :desc).pluck(:query)
+```
+
+And specific suggestions with:
+
+```ruby
+input = params[:query]
+Autosuggest::Suggestion
+  .order(score: :desc)
+  .where("query LIKE ?", "%#{Autosuggest::Suggestion.sanitize_sql_like(input.downcase)}%")
+  .pluck(:query)
+```
+
+You can also cache suggestions for performance.
+
+#### Additional steps
+
+You may also want to filter suggestions without results and have someone manually approve them by hand. You can add additional fields to your data store to accomplish this.
+
+## Example
 
 ```ruby
 top_queries = Searchjoy::Search.group(:normalized_query)
@@ -112,9 +159,15 @@ autosuggest.prefer brand_names
 autosuggest.not_duplicates [["straws", "straus"]]
 autosuggest.block_words ["boom"]
 
-puts autosuggest.pretty_suggestions
-# or
 suggestions = autosuggest.suggestions(filter: true)
+
+now = Time.now
+records = suggestions.map { |s| s.slice(:query, :score).merge(updated_at: now) }
+Autosuggest::Suggestion.transaction do
+  Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
+  # optional: remove previous suggestions
+  Autosuggest::Suggestion.where("updated_at < ?", now).delete_all
+end
 ```
 
 ## History

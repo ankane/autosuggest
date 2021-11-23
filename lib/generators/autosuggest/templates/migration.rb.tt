@@ -1,0 +1,11 @@
+class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version %>
+  def change
+    create_table :autosuggest_suggestions do |t|
+      t.string :query
+      t.float :score
+      t.datetime :updated_at
+    end
+
+    add_index :autosuggest_suggestions, :query, unique: true
+  end
+end

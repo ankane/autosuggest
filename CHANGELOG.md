@@ -1,3 +1,7 @@
+## 0.1.3 (unreleased)
+
+- Added model generator
+
 ## 0.1.2 (2021-11-22)
 
 - Added `filter` option to `suggestions` method
