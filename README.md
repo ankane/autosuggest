@@ -120,7 +120,7 @@ Use [activerecord-import](https://github.com/zdennis/activerecord-import) for up
 
 #### Show suggestions
 
-Use JavaScript autocomplete library like [typeahead.js](https://github.com/twitter/typeahead.js) to show suggestions in the UI.
+Use a JavaScript autocomplete library like [typeahead.js](https://github.com/twitter/typeahead.js) to show suggestions in the UI.
 
 If you only have a few thousand suggestions, it’s much faster to load them all at once instead of as a user types (eliminates network requests).
 
