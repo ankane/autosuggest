@@ -97,7 +97,7 @@ suggestions = autosuggest.suggestions(filter: true)
 
 Save suggestions in your database or another data store.
 
-With Rails, you can generate a simple model with: [unreleased]
+With Rails, you can generate a simple model with:
 
 ```sh
 rails generate autosuggest:suggestions
