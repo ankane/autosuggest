@@ -5,7 +5,7 @@ gemspec
 gem "rake"
 gem "minitest"
 
-ar_version = ENV["AR_VERSION"] || "6.1.0"
+ar_version = ENV["AR_VERSION"] || "7.0.0"
 gem "activerecord", "~> #{ar_version}"
 
 case ENV["ADAPTER"]
