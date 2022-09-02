@@ -11,7 +11,7 @@ Generate autocomplete suggestions based on what your users search
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'autosuggest'
+gem "autosuggest"
 ```
 
 ## Getting Started
