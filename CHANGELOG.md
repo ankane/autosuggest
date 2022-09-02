@@ -1,3 +1,7 @@
+## 0.2.0 (unreleased)
+
+- Dropped support for Ruby < 2.7
+
 ## 0.1.3 (2021-11-23)
 
 - Added model generator
