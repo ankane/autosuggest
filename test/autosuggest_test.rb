@@ -32,6 +32,22 @@ class AutosuggestTest < Minitest::Test
     assert_equal ["duplicate of tomato"], suggestion[:notes]
   end
 
+  def test_stemming_language
+    top_queries = {"tomate" => 2, "tomates" => 1}
+    autosuggest = Autosuggest.new(top_queries, language: "spanish")
+    suggestion = autosuggest.suggestions.last
+    assert_equal "tomate", suggestion[:duplicate]
+    assert_equal ["duplicate of tomate"], suggestion[:notes]
+  end
+
+  def test_stemming_language_invalid
+    top_queries = {"hello" => 2}
+    error = assert_raises(ArgumentError) do
+      Autosuggest.new(top_queries, language: "bad")
+    end
+    assert_equal "Language not available", error.message
+  end
+
   def test_profanity
     top_queries = {"hell" => 2}
     autosuggest = Autosuggest.new(top_queries)

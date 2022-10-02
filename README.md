@@ -45,7 +45,13 @@ autosuggest = Autosuggest.new(top_queries)
 
 [Stemming](https://en.wikipedia.org/wiki/Stemming) is used to detect duplicates like `apple` and `apples`.
 
-The most popular query is preferred by default.  To override this, use:
+Specify the stemming language with: [unreleased]
+
+```ruby
+autosuggest = Autosuggest.new(top_queries, language: "spanish")
+```
+
+The most popular query is preferred by default. To override this, use:
 
 ```ruby
 autosuggest.prefer ["apples"]

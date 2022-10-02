@@ -10,7 +10,7 @@ require "obscenity"
 require "autosuggest/version"
 
 class Autosuggest
-  def initialize(top_queries)
+  def initialize(top_queries, language: "english")
     @top_queries = top_queries
     @concepts = {}
     @words = Set.new
@@ -20,6 +20,12 @@ class Autosuggest
     @preferred_queries = {}
     @profane_words = {}
     @concept_tree = {}
+    begin
+      @stemmer = Lingua::Stemmer.new(language: language)
+    rescue Lingua::StemmerError
+      raise ArgumentError, "Language not available"
+    end
+    # TODO take language into account for profanity
     add_nodes(@profane_words, Obscenity::Base.blacklist)
   end
 
@@ -216,7 +222,7 @@ class Autosuggest
   end
 
   def normalize_query(query)
-    tokenize(query.to_s.gsub("&", "and")).map { |q| Lingua.stemmer(q) }.sort.join
+    tokenize(query.to_s.gsub("&", "and")).map { |q| @stemmer.stem(q) }.sort.join
   end
 
   def add_nodes(var, words)
