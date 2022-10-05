@@ -167,6 +167,12 @@ class AutosuggestTest < Minitest::Test
     assert_equal [false, false, false], autosuggest.suggestions.map { |s| s[:misspelling] }
   end
 
+  def test_short_query
+    top_queries = {"a" => 1, "ab" => 2}
+    autosuggest = Autosuggest.new(top_queries)
+    assert_equal 1, autosuggest.suggestions.size
+  end
+
   def test_long_query
     top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest.new(top_queries)
