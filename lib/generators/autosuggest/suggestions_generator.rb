@@ -1,6 +1,6 @@
 require "rails/generators/active_record"
 
-class Autosuggest
+module Autosuggest
   module Generators
     class SuggestionsGenerator < Rails::Generators::Base
       include ActiveRecord::Generators::Migration

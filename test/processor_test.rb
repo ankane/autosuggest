@@ -1,6 +1,6 @@
 require_relative "test_helper"
 
-class AutosuggestTest < Minitest::Test
+class ProcessorTest < Minitest::Test
   def test_fields
     top_queries = {"hello" => 2}
     autosuggest = Autosuggest.new(top_queries)
