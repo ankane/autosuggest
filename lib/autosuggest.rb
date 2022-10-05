@@ -151,6 +151,9 @@ class Autosuggest
       result[:notes] = notes
       result
     end
+    
+    results.compact!
+    
     if filter
       results.reject! { |s| s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked] }
     end
