@@ -171,12 +171,13 @@ class AutosuggestTest < Minitest::Test
     top_queries = {"a" => 1, "ab" => 2}
     autosuggest = Autosuggest.new(top_queries)
     assert_equal 1, autosuggest.suggestions.size
+    assert_equal 1, autosuggest.suggestions(filter: true).size
   end
 
   def test_long_query
     top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest.new(top_queries)
-    assert autosuggest.suggestions
+    assert_equal 1, autosuggest.suggestions.size
   end
 
   def test_filter
