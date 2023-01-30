@@ -205,7 +205,7 @@ end
 
 ### 0.2.0
 
-Suggestions are now filtered by default, and only the query and score are returned. To get all queries and fields, use:
+Suggestions are now filtered by default, and only the query and score are returned. Get all queries and fields with:
 
 ```ruby
 autosuggest.suggestions(filter: false)
