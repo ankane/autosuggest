@@ -96,7 +96,7 @@ autosuggest.block_words ["boom"]
 Generate suggestions with:
 
 ```ruby
-suggestions = autosuggest.suggestions
+suggestions = autosuggest.suggestions(filter: true)
 ```
 
 #### Save suggestions
