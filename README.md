@@ -158,18 +158,18 @@ end
 You may want to have someone manually approve suggestions:
 
 ```ruby
-Autosuggest::Suggestion.where(approved: true)
+Autosuggest::Suggestion.where(status: "approved")
 ```
 
 Or filter suggestions without results:
 
 ```ruby
 Autosuggest::Suggestion.find_each do |suggestion|
-  suggestion.has_results = Product.search(suggestion.query, load: false, limit: 1).any?
+  suggestion.results_count = Product.search(suggestion.query, load: false).count
   suggestion.save! if suggestion.changed?
 end
 
-Autosuggest::Suggestion.where(has_results: true)
+Autosuggest::Suggestion.where("results_count > 0")
 ```
 
 You can add additional fields to your model/data store to accomplish this.
