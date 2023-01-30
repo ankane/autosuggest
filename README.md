@@ -38,17 +38,17 @@ top_queries = Searchjoy::Search.group(:normalized_query)
 Then pass them to Autosuggest.
 
 ```ruby
-autosuggest = Autosuggest.new(top_queries)
+autosuggest = Autosuggest::Generator.new(top_queries)
 ```
 
 #### Filter duplicates
 
 [Stemming](https://en.wikipedia.org/wiki/Stemming) is used to detect duplicates like `apple` and `apples`.
 
-Specify the stemming language with: [unreleased]
+Specify the stemming language (defaults to `english`) with:
 
 ```ruby
-autosuggest = Autosuggest.new(top_queries, language: "spanish")
+autosuggest = Autosuggest::Generator.new(top_queries, language: "spanish")
 ```
 
 The most popular query is preferred by default. To override this, use:
@@ -96,7 +96,7 @@ autosuggest.block_words ["boom"]
 Generate suggestions with:
 
 ```ruby
-suggestions = autosuggest.suggestions(filter: true)
+suggestions = autosuggest.suggestions
 ```
 
 #### Save suggestions
@@ -182,14 +182,14 @@ top_queries = Searchjoy::Search.group(:normalized_query)
 product_names = Product.pluck(:name)
 brand_names = Brand.pluck(:name)
 
-autosuggest = Autosuggest.new(top_queries)
+autosuggest = Autosuggest::Generator.new(top_queries)
 autosuggest.parse_words product_names
 autosuggest.add_concept "brand", brand_names
 autosuggest.prefer brand_names
 autosuggest.not_duplicates [["straws", "straus"]]
 autosuggest.block_words ["boom"]
 
-suggestions = autosuggest.suggestions(filter: true)
+suggestions = autosuggest.suggestions
 
 now = Time.now
 records = suggestions.map { |s| s.slice(:query, :score).merge(updated_at: now) }
@@ -201,7 +201,7 @@ end
 
 ## Upgrading
 
-### 0.2.0 [unreleased]
+### 0.2.0
 
 Suggestions are now filtered by default. To get all queries, use:
 
