@@ -3,6 +3,7 @@
 - Added `language` option
 - Changed `suggestions` method to filter by default
 - Changed `filter: true` to only return query and score
+- Removed `blacklist_words` method
 - Dropped support for Ruby < 2.7
 
 ## 0.1.3 (2021-11-23)

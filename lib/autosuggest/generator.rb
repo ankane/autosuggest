@@ -6,7 +6,6 @@ module Autosuggest
       @words = Set.new
       @non_duplicates = Set.new
       @blocked_words = {}
-      @blacklisted_words = {}
       @preferred_queries = {}
       @profane_words = {}
       @concept_tree = {}
@@ -51,12 +50,6 @@ module Autosuggest
 
     def block_words(words)
       add_nodes(@blocked_words, words)
-      words
-    end
-
-    def blacklist_words(words)
-      warn "[autosuggest] blacklist_words is deprecated. Use block_words instead."
-      add_nodes(@blacklisted_words, words)
       words
     end
 
@@ -115,7 +108,6 @@ module Autosuggest
 
         profane = blocked?(tokens, @profane_words)
         blocked = blocked?(tokens, @blocked_words)
-        blacklisted = blocked?(tokens, @blacklisted_words)
 
         notes = []
         notes << "duplicate of #{duplicate}" if duplicate
@@ -123,10 +115,9 @@ module Autosuggest
         notes << "misspelling" if misspelling
         notes << "profane" if profane
         notes << "blocked" if blocked
-        notes << "blacklisted" if blacklisted
         notes << "originally #{original_query}" if original_query
 
-        result = {
+        {
           query: query,
           original_query: original_query,
           score: count,
@@ -134,11 +125,9 @@ module Autosuggest
           concepts: concepts,
           misspelling: misspelling,
           profane: profane,
-          blocked: blocked
+          blocked: blocked,
+          notes: notes
         }
-        result[:blacklisted] = blacklisted if @blacklisted_words.any?
-        result[:notes] = notes
-        result
       end
 
       results.compact!

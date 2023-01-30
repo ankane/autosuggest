@@ -89,28 +89,6 @@ class GeneratorTest < Minitest::Test
     assert_equal ["blocked"], suggestion[:notes]
   end
 
-  def test_blacklist
-    top_queries = {"test boom" => 2}
-    autosuggest = Autosuggest::Generator.new(top_queries)
-    assert_output(nil, /deprecated/) do
-      autosuggest.blacklist_words(["boom"])
-    end
-    suggestion = autosuggest.suggestions(filter: false).first
-    assert suggestion[:blacklisted]
-    assert_equal ["blacklisted"], suggestion[:notes]
-  end
-
-  def test_blacklist_phrase
-    top_queries = {"test boom" => 2}
-    autosuggest = Autosuggest::Generator.new(top_queries)
-    assert_output(nil, /deprecated/) do
-      autosuggest.blacklist_words(["test boom"])
-    end
-    suggestion = autosuggest.suggestions(filter: false).first
-    assert suggestion[:blacklisted]
-    assert_equal ["blacklisted"], suggestion[:notes]
-  end
-
   def test_prefer
     top_queries = {"amys" => 2}
     autosuggest = Autosuggest::Generator.new(top_queries)
