@@ -1,5 +1,5 @@
 module Autosuggest
-  class Processor
+  class Generator
     def initialize(top_queries, language: "english")
       @top_queries = top_queries
       @concepts = {}
