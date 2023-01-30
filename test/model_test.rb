@@ -7,7 +7,7 @@ class ModelTest < Minitest::Test
 
   def test_works
     top_queries = {"apple" => 3, "banana" => 2, "carrot" => 1}
-    autosuggest = Autosuggest.new(top_queries)
+    autosuggest = Autosuggest::Generator.new(top_queries)
     update_suggestions(autosuggest)
 
     results = Autosuggest::Suggestion.order(score: :desc).pluck(:query)
@@ -24,12 +24,12 @@ class ModelTest < Minitest::Test
 
   def test_update
     top_queries = {"apples" => 3, "apple" => 2}
-    autosuggest = Autosuggest.new(top_queries)
+    autosuggest = Autosuggest::Generator.new(top_queries)
     update_suggestions(autosuggest)
 
     assert_equal ["apples"], Autosuggest::Suggestion.pluck(:query)
 
-    autosuggest = Autosuggest.new(top_queries)
+    autosuggest = Autosuggest::Generator.new(top_queries)
     autosuggest.prefer ["apple"]
     update_suggestions(autosuggest)
 
