@@ -4,6 +4,8 @@ Generate autocomplete suggestions based on what your users search
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
+Autosuggest 0.2 was recently released! See [how to upgrade](#upgrading)
+
 [![Build Status](https://github.com/ankane/autosuggest/workflows/build/badge.svg?branch=master)](https://github.com/ankane/autosuggest/actions)
 
 ## Installation
@@ -203,7 +205,7 @@ end
 
 ### 0.2.0
 
-Suggestions are now filtered by default. To get all queries, use:
+Suggestions are now filtered by default, and only the query and score are returned. To get all queries and fields, use:
 
 ```ruby
 autosuggest.suggestions(filter: false)
