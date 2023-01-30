@@ -144,9 +144,14 @@ module Autosuggest
       results.compact!
 
       if filter
-        results.reject! { |s| s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked] }
+        results.filter_map do |s|
+          unless s[:duplicate] || s[:misspelling] || s[:profane] || s[:blocked]
+            s.slice(:query, :score)
+          end
+        end
+      else
+        results
       end
-      results
     end
 
     def pretty_suggestions
