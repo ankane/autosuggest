@@ -96,7 +96,7 @@ autosuggest.block_words ["boom"]
 Generate suggestions with:
 
 ```ruby
-suggestions = autosuggest.suggestions(filter: true)
+suggestions = autosuggest.suggestions
 ```
 
 #### Save suggestions
@@ -197,6 +197,16 @@ Autosuggest::Suggestion.transaction do
   Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
   Autosuggest::Suggestion.where("updated_at < ?", now).delete_all
 end
+```
+
+## Upgrading
+
+### 0.2.0
+
+Suggestions are now filtered by default. To get all queries, use:
+
+```ruby
+autosuggest.suggestions(filter: false)
 ```
 
 ## History

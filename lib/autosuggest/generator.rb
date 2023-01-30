@@ -66,8 +66,7 @@ module Autosuggest
       end
     end
 
-    # TODO add queries method for filter: false and make suggestions use filter: true in 0.2.0
-    def suggestions(filter: false)
+    def suggestions(filter: true)
       stemmed_queries = {}
       added_queries = Set.new
       results = @top_queries.sort_by { |_query, count| -count }.map do |query, count|

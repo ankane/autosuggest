@@ -4,7 +4,7 @@ class GeneratorTest < Minitest::Test
   def test_fields
     top_queries = {"hello" => 2}
     autosuggest = Autosuggest.new(top_queries)
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert_equal suggestion[:query], "hello"
     assert_nil suggestion[:original_query]
     assert_equal 2, suggestion[:score]
@@ -19,7 +19,7 @@ class GeneratorTest < Minitest::Test
   def test_similar_queries
     top_queries = {"chili" => 2, "chilli" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    suggestion = autosuggest.suggestions.last
+    suggestion = autosuggest.suggestions(filter: false).last
     assert_equal "chili", suggestion[:duplicate]
     assert_equal ["duplicate of chili"], suggestion[:notes]
   end
@@ -27,7 +27,7 @@ class GeneratorTest < Minitest::Test
   def test_stemming
     top_queries = {"tomato" => 2, "tomatoes" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    suggestion = autosuggest.suggestions.last
+    suggestion = autosuggest.suggestions(filter: false).last
     assert_equal "tomato", suggestion[:duplicate]
     assert_equal ["duplicate of tomato"], suggestion[:notes]
   end
@@ -35,7 +35,7 @@ class GeneratorTest < Minitest::Test
   def test_stemming_language
     top_queries = {"tomate" => 2, "tomates" => 1}
     autosuggest = Autosuggest.new(top_queries, language: "spanish")
-    suggestion = autosuggest.suggestions.last
+    suggestion = autosuggest.suggestions(filter: false).last
     assert_equal "tomate", suggestion[:duplicate]
     assert_equal ["duplicate of tomate"], suggestion[:notes]
   end
@@ -51,7 +51,7 @@ class GeneratorTest < Minitest::Test
   def test_profanity
     top_queries = {"hell" => 2}
     autosuggest = Autosuggest.new(top_queries)
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert suggestion[:profane]
     assert_equal ["profane"], suggestion[:notes]
   end
@@ -59,7 +59,7 @@ class GeneratorTest < Minitest::Test
   def test_duplicates
     top_queries = {"cage free eggs" => 2, "eggs cage free" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    suggestion = autosuggest.suggestions.last
+    suggestion = autosuggest.suggestions(filter: false).last
     assert_equal "cage free eggs", suggestion[:duplicate]
     assert_equal ["duplicate of cage free eggs"], suggestion[:notes]
   end
@@ -68,14 +68,14 @@ class GeneratorTest < Minitest::Test
     top_queries = {"straws" => 2, "straus" => 1}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.not_duplicates([["straus", "straws"]])
-    assert !autosuggest.suggestions.any? { |s| s[:duplicate] }
+    assert !autosuggest.suggestions(filter: false).any? { |s| s[:duplicate] }
   end
 
   def test_block_words
     top_queries = {"test boom" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.block_words(["boom"])
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert suggestion[:blocked]
     assert_equal ["blocked"], suggestion[:notes]
   end
@@ -84,7 +84,7 @@ class GeneratorTest < Minitest::Test
     top_queries = {"test boom" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.block_words(["test boom"])
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert suggestion[:blocked]
     assert_equal ["blocked"], suggestion[:notes]
   end
@@ -95,7 +95,7 @@ class GeneratorTest < Minitest::Test
     assert_output(nil, /deprecated/) do
       autosuggest.blacklist_words(["boom"])
     end
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert suggestion[:blacklisted]
     assert_equal ["blacklisted"], suggestion[:notes]
   end
@@ -106,7 +106,7 @@ class GeneratorTest < Minitest::Test
     assert_output(nil, /deprecated/) do
       autosuggest.blacklist_words(["test boom"])
     end
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert suggestion[:blacklisted]
     assert_equal ["blacklisted"], suggestion[:notes]
   end
@@ -115,7 +115,7 @@ class GeneratorTest < Minitest::Test
     top_queries = {"amys" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.prefer(["amy's"])
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert_equal "amy's", suggestion[:query]
     assert_equal "amys", suggestion[:original_query]
     assert_equal ["originally amys"], suggestion[:notes]
@@ -125,7 +125,7 @@ class GeneratorTest < Minitest::Test
     top_queries = {"amys" => 2}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.add_concept("brand", ["amys"])
-    suggestion = autosuggest.suggestions.first
+    suggestion = autosuggest.suggestions(filter: false).first
     assert_equal ["brand"], suggestion[:concepts]
     assert_equal ["brand"], suggestion[:notes]
   end
@@ -134,8 +134,8 @@ class GeneratorTest < Minitest::Test
     top_queries = {"tomato" => 2, "tomoto" => 1}
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.parse_words ["tomato soup"]
-    refute autosuggest.suggestions.first[:misspelling]
-    assert autosuggest.suggestions.last[:misspelling]
+    refute autosuggest.suggestions(filter: false).first[:misspelling]
+    assert autosuggest.suggestions(filter: false).last[:misspelling]
   end
 
   def test_misspelling
@@ -152,7 +152,7 @@ class GeneratorTest < Minitest::Test
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.parse_words ["hello"]
     autosuggest.add_concept("brand", ["multiple words"])
-    assert_equal [false, true, false, false, false, true, true, true], autosuggest.suggestions.map { |s| s[:misspelling] }
+    assert_equal [false, true, false, false, false, true, true, true], autosuggest.suggestions(filter: false).map { |s| s[:misspelling] }
   end
 
   def test_misspelling_overlap
@@ -164,26 +164,26 @@ class GeneratorTest < Minitest::Test
     autosuggest = Autosuggest.new(top_queries)
     autosuggest.parse_words ["hello", "word"]
     autosuggest.add_concept("brand", ["hello", "hello brand", "hello brand great"])
-    assert_equal [false, false, false], autosuggest.suggestions.map { |s| s[:misspelling] }
+    assert_equal [false, false, false], autosuggest.suggestions(filter: false).map { |s| s[:misspelling] }
   end
 
   def test_short_query
     top_queries = {"a" => 1, "ab" => 2}
     autosuggest = Autosuggest.new(top_queries)
     assert_equal 1, autosuggest.suggestions.size
-    assert_equal 1, autosuggest.suggestions(filter: true).size
+    assert_equal 1, autosuggest.suggestions(filter: false).size
   end
 
   def test_long_query
     top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest.new(top_queries)
-    assert_equal 1, autosuggest.suggestions.size
+    assert_equal 1, autosuggest.suggestions(filter: false).size
   end
 
   def test_filter
     top_queries = {"tomato" => 2, "tomatoes" => 1}
     autosuggest = Autosuggest.new(top_queries)
-    suggestions = autosuggest.suggestions(filter: true)
+    suggestions = autosuggest.suggestions
     assert_equal 1, suggestions.size
     assert_equal "tomato", suggestions.first[:query]
   end

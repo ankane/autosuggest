@@ -1,6 +1,7 @@
 ## 0.2.0 (unreleased)
 
 - Added `language` option
+- Changed `suggestions` method to filter by default
 - Dropped support for Ruby < 2.7
 
 ## 0.1.3 (2021-11-23)
