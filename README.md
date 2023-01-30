@@ -201,7 +201,7 @@ end
 
 ## Upgrading
 
-### 0.2.0
+### 0.2.0 [unreleased]
 
 Suggestions are now filtered by default. To get all queries, use:
 
