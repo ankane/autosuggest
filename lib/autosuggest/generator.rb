@@ -143,13 +143,14 @@ module Autosuggest
       end
     end
 
-    def pretty_suggestions
+    def table
       str = "%-30s   %5s   %s\n" % %w(Query Score Notes)
       suggestions(filter: false).each do |suggestion|
         str << "%-30s   %5d   %s\n" % [suggestion[:query], suggestion[:score], suggestion[:notes].join(", ")]
       end
       str
     end
+    alias_method :pretty_suggestions, :table
 
     protected
 
