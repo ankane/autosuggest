@@ -187,4 +187,10 @@ class GeneratorTest < Minitest::Test
     assert_equal 1, suggestions.size
     assert_equal "tomato", suggestions.first[:query]
   end
+
+  def test_pretty_suggestions
+    top_queries = {"tomato" => 2, "tomatoes" => 1}
+    autosuggest = Autosuggest::Generator.new(top_queries)
+    assert_match "duplicate of tomato", autosuggest.pretty_suggestions
+  end
 end

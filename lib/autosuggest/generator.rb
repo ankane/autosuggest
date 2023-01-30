@@ -156,7 +156,7 @@ module Autosuggest
 
     def pretty_suggestions
       str = "%-30s   %5s   %s\n" % %w(Query Score Notes)
-      suggestions.each do |suggestion|
+      suggestions(filter: false).each do |suggestion|
         str << "%-30s   %5d   %s\n" % [suggestion[:query], suggestion[:score], suggestion[:notes].join(", ")]
       end
       str
