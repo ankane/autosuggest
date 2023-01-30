@@ -7,8 +7,8 @@ require "lingua/stemmer"
 require "obscenity"
 
 # modules
-require "autosuggest/processor"
-require "autosuggest/version"
+require_relative "autosuggest/processor"
+require_relative "autosuggest/version"
 
 module Autosuggest
   def self.new(*args, **options)
