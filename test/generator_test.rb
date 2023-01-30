@@ -1,6 +1,14 @@
 require_relative "test_helper"
 
 class GeneratorTest < Minitest::Test
+  def test_suggestions
+    top_queries = {"tomato" => 2, "tomatoes" => 1}
+    autosuggest = Autosuggest::Generator.new(top_queries)
+    suggestions = autosuggest.suggestions
+    assert_equal 1, suggestions.size
+    assert_equal "tomato", suggestions.first[:query]
+  end
+
   def test_fields
     top_queries = {"hello" => 2}
     autosuggest = Autosuggest::Generator.new(top_queries)
@@ -156,14 +164,6 @@ class GeneratorTest < Minitest::Test
     top_queries = {50.times.map { |i| "word#{i}" }.join(" ") => 1}
     autosuggest = Autosuggest::Generator.new(top_queries)
     assert_equal 1, autosuggest.suggestions(filter: false).size
-  end
-
-  def test_filter
-    top_queries = {"tomato" => 2, "tomatoes" => 1}
-    autosuggest = Autosuggest::Generator.new(top_queries)
-    suggestions = autosuggest.suggestions
-    assert_equal 1, suggestions.size
-    assert_equal "tomato", suggestions.first[:query]
   end
 
   def test_table
