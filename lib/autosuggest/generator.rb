@@ -10,8 +10,8 @@ module Autosuggest
       @profane_words = {}
       @concept_tree = {}
       begin
-        @stemmer = Lingua::Stemmer.new(language: language)
-      rescue Lingua::StemmerError
+        @stemmer = Mittens::Stemmer.new(language: language)
+      rescue ArgumentError
         raise ArgumentError, "Language not available"
       end
       # TODO take language into account for profanity

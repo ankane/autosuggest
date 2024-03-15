@@ -1,3 +1,8 @@
+## 0.3.0 (unreleased)
+
+- Switched to Mittens for stemming
+- Dropped support for Ruby < 3.1
+
 ## 0.2.0 (2023-01-29)
 
 - Added `language` option

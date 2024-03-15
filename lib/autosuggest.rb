@@ -3,7 +3,7 @@ require "set"
 require "yaml" # for obscenity
 
 # dependencies
-require "lingua/stemmer"
+require "mittens"
 require "obscenity"
 
 # modules
