@@ -199,16 +199,6 @@ Autosuggest::Suggestion.transaction do
 end
 ```
 
-## Upgrading
-
-### 0.2.0
-
-Suggestions are now filtered by default, and only the query and score are returned. Get all queries and fields with:
-
-```ruby
-autosuggest.suggestions(filter: false)
-```
-
 ## History
 
 View the [changelog](https://github.com/ankane/autosuggest/blob/master/CHANGELOG.md)
