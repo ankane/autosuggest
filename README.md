@@ -121,7 +121,7 @@ Autosuggest::Suggestion.transaction do
 end
 ```
 
-Leave out `unique_by` for MySQL, and use [activerecord-import](https://github.com/zdennis/activerecord-import) for upserts with Rails < 6.
+Leave out `unique_by` for MySQL.
 
 #### Show suggestions
 
