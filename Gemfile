@@ -5,7 +5,7 @@ gemspec
 gem "rake"
 gem "minitest"
 
-ar_version = ENV["AR_VERSION"] || "7.1.0"
+ar_version = ENV["AR_VERSION"] || "8.0.0"
 gem "activerecord", "~> #{ar_version}"
 
 case ENV["ADAPTER"]
@@ -14,5 +14,5 @@ when "postgresql"
 when "mysql"
   gem "mysql2"
 else
-  gem "sqlite3", "< 2"
+  gem "sqlite3", ar_version.to_f <= 7.1 ? "< 2" : nil
 end
