@@ -40,7 +40,7 @@ class ModelTest < Minitest::Test
     now = Time.now
     records = autosuggest.suggestions(filter: true).map { |s| s.slice(:query, :score).merge(updated_at: now) }
     Autosuggest::Suggestion.transaction do
-      if ENV["ADAPTER"] == "mysql"
+      if ["mysql", "trilogy"].include?(ENV["ADAPTER"])
         Autosuggest::Suggestion.upsert_all(records)
       else
         Autosuggest::Suggestion.upsert_all(records, unique_by: :query)
