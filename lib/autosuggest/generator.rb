@@ -24,6 +24,7 @@ module Autosuggest
       @concepts[name] = Set.new(values.map(&:downcase))
     end
 
+    # TODO switch to keyword arguments in 0.4.0
     def parse_words(phrases, options = {})
       min = options[:min] || 1
 
