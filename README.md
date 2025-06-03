@@ -65,7 +65,7 @@ autosuggest.not_duplicates [["straws", "straus"]]
 
 #### Filter misspellings
 
-We tried open-source libraries like [Aspell](http://aspell.net) and [Hunspell](http://hunspell.sourceforge.net/) but quickly realized we needed to build a corpus specific to our application.
+We tried open-source libraries like [Aspell](http://aspell.net) and [Hunspell](https://github.com/hunspell/hunspell) but quickly realized we needed to build a corpus specific to our application.
 
 There are two ways to build the corpus, which can be used together.
 
