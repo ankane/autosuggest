@@ -22,11 +22,7 @@ module Autosuggest
       # use connection_config instead of connection.adapter
       # so database connection isn't needed
       def adapter
-        if ActiveRecord::VERSION::STRING.to_f >= 6.1
-          ActiveRecord::Base.connection_db_config.adapter.to_s
-        else
-          ActiveRecord::Base.connection_config[:adapter].to_s
-        end
+        ActiveRecord::Base.connection_db_config.adapter.to_s
       end
     end
   end

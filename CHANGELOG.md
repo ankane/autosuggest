@@ -1,3 +1,7 @@
+## 0.4.0 (unreleased)
+
+- Dropped support for Ruby < 3.2
+
 ## 0.3.0 (2024-05-22)
 
 - Switched to Mittens for stemming

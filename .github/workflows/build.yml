@@ -12,12 +12,6 @@ jobs:
             ar_version: 8.0.0
           - ruby: 3.2
             ar_version: 7.2.0
-          - ruby: 3.2
-            ar_version: 7.1.0
-          - ruby: 3.1
-            ar_version: 7.0.0
-          - ruby: 3.1
-            ar_version: 6.1.0
     runs-on: ubuntu-latest
     env:
       AR_VERSION: ${{ matrix.ar_version }}
