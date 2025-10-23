@@ -16,5 +16,5 @@ when "mysql"
 when "trilogy"
   gem "trilogy"
 else
-  gem "sqlite3", ar_version.to_f <= 7.1 ? "< 2" : nil
+  gem "sqlite3"
 end
