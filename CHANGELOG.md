@@ -1,5 +1,6 @@
 ## 0.4.0 (unreleased)
 
+- Switched to keyword arguments for `parse_words` method
 - Dropped support for Ruby < 3.2
 
 ## 0.3.0 (2024-05-22)
