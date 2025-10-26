@@ -1,4 +1,4 @@
-## 0.4.0 (unreleased)
+## 0.4.0 (2025-10-26)
 
 - Switched to keyword arguments for `parse_words` method
 - Dropped support for Ruby < 3.2
